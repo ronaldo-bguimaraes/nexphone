@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nexphone.local/schemas/config-1.0.json",
+  "title": "NexPhone M0 configuration",
+  "description": "Configuration contract for a single-host NexPhone M0 deployment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["host", "runtime", "storage", "auth", "logging"],
+  "properties": {
+    "host": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding", "port", "tls"],
+      "properties": {
+        "binding": {
+          "type": "string",
+          "enum": ["lan", "loopback"],
+          "default": "lan",
+          "description": "Public exposure is not supported in M0."
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 8443
+        },
+        "tls": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mode"],
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": ["caddy-internal", "provided"],
+              "default": "caddy-internal"
+            },
+            "certPath": {
+              "type": "string",
+              "description": "Required when mode is provided."
+            },
+            "keyPath": {
+              "type": "string",
+              "description": "Required when mode is provided."
+            }
+          },
+          "if": { "properties": { "mode": { "const": "provided" } } },
+          "then": { "required": ["certPath", "keyPath"] }
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter", "image", "display"],
+      "properties": {
+        "adapter": {
+          "type": "string",
+          "enum": ["redroid"],
+          "default": "redroid"
+        },
+        "image": {
+          "type": "string",
+          "pattern": "^[a-z0-9./_-]+@sha256:[a-f0-9]{64}$",
+          "description": "Pinned image reference. Floating tags are rejected."
+        },
+        "display": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["width", "height", "fps"],
+          "properties": {
+            "width": {
+              "type": "integer",
+              "minimum": 320,
+              "maximum": 1920,
+              "multipleOf": 2,
+              "default": 720
+            },
+            "height": {
+              "type": "integer",
+              "minimum": 320,
+              "maximum": 1920,
+              "multipleOf": 2,
+              "default": 1280
+            },
+            "fps": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 60,
+              "default": 30
+            }
+          }
+        },
+        "gpuMode": {
+          "type": "string",
+          "enum": ["guest", "host", "auto"],
+          "default": "guest"
+        },
+        "memoryLimitMb": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 65536
+        },
+        "adapterConfig": {
+          "type": "object",
+          "additionalProperties": true,
+          "default": {}
+        }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataPath", "statePath"],
+      "properties": {
+        "dataPath": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Host directory bind-mounted as the Android persistent store."
+        },
+        "statePath": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Host directory containing the control-plane SQLite database."
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pairingTtlSeconds", "sessionIdleTtlSeconds", "sessionAbsoluteTtlSeconds"],
+      "properties": {
+        "pairingTtlSeconds": {
+          "type": "integer",
+          "minimum": 60,
+          "maximum": 900,
+          "default": 300
+        },
+        "sessionIdleTtlSeconds": {
+          "type": "integer",
+          "minimum": 300,
+          "maximum": 86400,
+          "default": 43200
+        },
+        "sessionAbsoluteTtlSeconds": {
+          "type": "integer",
+          "minimum": 3600,
+          "maximum": 172800,
+          "default": 86400
+        },
+        "maxPairingAttemptsPerMinute": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30,
+          "default": 5
+        }
+      }
+    },
+    "logging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "retentionDays"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["debug", "info", "warn", "error"],
+          "default": "info"
+        },
+        "retentionDays": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 90,
+          "default": 14
+        }
+      }
+    }
+  }
+}

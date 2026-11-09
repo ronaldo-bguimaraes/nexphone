@@ -1,0 +1,494 @@
+openapi: 3.1.0
+info:
+  title: NexPhone Local API
+  version: 1.0.0
+  description: |
+    Local control-plane API for a single NexPhone M0 deployment.
+
+    All endpoints except `/api/health` and `/api/pair` require a bearer session token obtained
+    through pairing. The API is intended for the local network only and is served over TLS.
+    The interactive screen/input channel is a WebSocket documented in `websocket.md`.
+servers:
+  - url: https://{host}:{port}
+    variables:
+      host:
+        default: nexphone.local
+      port:
+        default: "8443"
+security:
+  - bearerAuth: []
+tags:
+  - name: system
+  - name: auth
+  - name: runtime
+  - name: apps
+paths:
+  /api/health:
+    get:
+      tags: [system]
+      summary: Minimal liveness probe
+      security: []
+      responses:
+        "200":
+          description: The gateway process is alive.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+  /api/status:
+    get:
+      tags: [system]
+      summary: Deployment and runtime status
+      responses:
+        "200":
+          description: Current status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /api/pair:
+    post:
+      tags: [auth]
+      summary: Exchange a pairing code for a session token
+      security: []
+      description: |
+        Rate-limited per source. The code is single-use and expires after the configured TTL.
+        A 401 is returned for an invalid, expired or already-consumed code without revealing
+        which condition applied.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PairRequest"
+      responses:
+        "200":
+          description: Pairing succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PairResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          description: A session is already active.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/session:
+    delete:
+      tags: [auth]
+      summary: Revoke the current session
+      responses:
+        "204":
+          description: Session revoked.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /api/sessions:
+    get:
+      tags: [auth]
+      summary: List known sessions
+      responses:
+        "200":
+          description: Sessions, including expired and revoked records within the audit window.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /api/runtime:
+    get:
+      tags: [runtime]
+      summary: Runtime status and capabilities
+      responses:
+        "200":
+          description: Runtime detail.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RuntimeDetail"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /api/runtime/start:
+    post:
+      tags: [runtime]
+      summary: Start the Android runtime
+      responses:
+        "202":
+          description: Start accepted; poll `/api/runtime` for readiness.
+        "409":
+          description: Runtime is already starting or ready.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          $ref: "#/components/responses/Unprocessable"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /api/runtime/stop:
+    post:
+      tags: [runtime]
+      summary: Stop the Android runtime
+      responses:
+        "202":
+          description: Stop accepted.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /api/runtime/restart:
+    post:
+      tags: [runtime]
+      summary: Restart the Android runtime
+      responses:
+        "202":
+          description: Restart accepted.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /api/apps:
+    get:
+      tags: [apps]
+      summary: List installed applications
+      responses:
+        "200":
+          description: Installed applications.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          description: Runtime is not ready.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      tags: [apps]
+      summary: Install an application package
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [package]
+              properties:
+                package:
+                  type: string
+                  format: binary
+                  description: Android APK, maximum 512 MiB.
+      responses:
+        "201":
+          description: Installed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Application"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "409":
+          description: Runtime not ready.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          $ref: "#/components/responses/Unprocessable"
+  /api/apps/{packageId}/launch:
+    post:
+      tags: [apps]
+      summary: Launch an application by package identifier
+      parameters:
+        - $ref: "#/components/parameters/PackageId"
+      responses:
+        "202":
+          description: Launch accepted.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: Application is not installed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Runtime not ready.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/apps/{packageId}/stop:
+    post:
+      tags: [apps]
+      summary: Stop a running application
+      parameters:
+        - $ref: "#/components/parameters/PackageId"
+      responses:
+        "202":
+          description: Stop accepted.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: Application is not installed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: session-token
+  parameters:
+    PackageId:
+      name: packageId
+      in: path
+      required: true
+      description: Android package identifier, for example `org.example.notes`.
+      schema:
+        type: string
+        pattern: "^[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*)+$"
+  responses:
+    BadRequest:
+      description: Malformed request.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Missing, invalid, expired or revoked session.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    RateLimited:
+      description: Too many attempts; retry later.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+  schemas:
+    Health:
+      type: object
+      required: [status, version]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        version:
+          type: string
+          example: 0.1.0
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              example: runtime_not_ready
+            message:
+              type: string
+              example: The Android runtime is not ready.
+            remediation:
+              type: string
+              example: Start the runtime and wait for the ready state.
+            correlationId:
+              type: string
+    PairRequest:
+      type: object
+      required: [code]
+      properties:
+        code:
+          type: string
+          pattern: "^[0-9]{8}$"
+        clientName:
+          type: string
+          maxLength: 64
+    PairResponse:
+      type: object
+      required: [token, sessionId, expiresAt]
+      properties:
+        token:
+          type: string
+          description: Opaque 256-bit session token. Shown once; store in memory or secure storage.
+        sessionId:
+          type: string
+          format: uuid
+        expiresAt:
+          type: string
+          format: date-time
+    Session:
+      type: object
+      required: [id, state, createdAt, lastSeenAt, expiresAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        state:
+          type: string
+          enum: [active, expired, revoked, closed]
+        createdAt:
+          type: string
+          format: date-time
+        lastSeenAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        clientIp:
+          type: string
+        userAgent:
+          type: string
+    RuntimeState:
+      type: string
+      enum: [stopped, starting, ready, stopping, restarting, failed]
+    HealthState:
+      type: string
+      enum: [ok, degraded, unhealthy]
+    NormalizedError:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        remediation:
+          type: string
+        cause:
+          type: string
+    RuntimeCapabilities:
+      type: object
+      required: [androidVersion, apiLevel, abiList, displayWidth, displayHeight, fps, gpuMode]
+      properties:
+        androidVersion:
+          type: string
+        apiLevel:
+          type: integer
+        abiList:
+          type: array
+          items:
+            type: string
+        displayWidth:
+          type: integer
+        displayHeight:
+          type: integer
+        fps:
+          type: integer
+        gpuMode:
+          type: string
+          enum: [guest, host]
+        features:
+          type: object
+          additionalProperties:
+            type: boolean
+    RuntimeDetail:
+      type: object
+      required: [state, health, adapter, capabilities]
+      properties:
+        state:
+          $ref: "#/components/schemas/RuntimeState"
+        health:
+          $ref: "#/components/schemas/HealthState"
+        adapter:
+          type: string
+          example: redroid
+        contractVersion:
+          type: string
+          example: 1.0.0
+        startedAt:
+          type: [string, "null"]
+          format: date-time
+        lastError:
+          oneOf:
+            - $ref: "#/components/schemas/NormalizedError"
+            - type: "null"
+        capabilities:
+          oneOf:
+            - $ref: "#/components/schemas/RuntimeCapabilities"
+            - type: "null"
+    Status:
+      type: object
+      required: [version, runtime, storage, sessions]
+      properties:
+        version:
+          type: string
+        runtime:
+          type: object
+          required: [state, health, adapter]
+          properties:
+            state:
+              $ref: "#/components/schemas/RuntimeState"
+            health:
+              $ref: "#/components/schemas/HealthState"
+            adapter:
+              type: string
+        storage:
+          type: object
+          required: [state]
+          properties:
+            state:
+              type: string
+              enum: [ok, missing, read-only, unsafe, inconsistent]
+            path:
+              type: string
+            lastCheckedAt:
+              type: string
+              format: date-time
+        sessions:
+          type: object
+          required: [active]
+          properties:
+            active:
+              type: integer
+              minimum: 0
+              maximum: 1
+    Application:
+      type: object
+      required: [packageId, label, versionName, versionCode, state]
+      properties:
+        packageId:
+          type: string
+        label:
+          type: string
+        versionName:
+          type: string
+        versionCode:
+          type: integer
+        state:
+          type: string
+          enum: [installed, starting, running, stopped, error]
+        installedAt:
+          type: string
+          format: date-time
+        lastLaunchedAt:
+          type: [string, "null"]
+          format: date-time
+        lastError:
+          oneOf:
+            - $ref: "#/components/schemas/NormalizedError"
+            - type: "null"
