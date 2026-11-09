@@ -1,8 +1,13 @@
 # Security review — M0
 
 **Date**: 2026-11-09
-**Scope**: gateway, web client, runtime adapter, deployment artifacts.
-**Status**: Code-level review complete; host-level validation pending (`docs/validation/m0-results.md`).
+**Scope**: M0 gateway, web terminal, runtime adapter and deployment artifacts.
+**Status**: M0 code-level review complete; host-level validation pending
+(`docs/validation/m0-results.md`).
+
+The authorization model for agent actions is specified separately in
+[`authorization.md`](authorization.md). It is not implemented yet; M0 has no agent, UI Engine or
+Device Bridge. Sections below describe the delivered M0 controls only.
 
 ## Controls implemented
 

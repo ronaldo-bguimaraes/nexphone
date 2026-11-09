@@ -1,6 +1,6 @@
 # NexPhone Constitution
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Project:** NexPhone
 **Status:** Ratified
 
@@ -11,8 +11,8 @@ NexPhone is an open-source, self-hosted, AI-native personal computing platform.
 Its purpose is to make artificial intelligence the primary interface through which people
 interact with applications and digital services.
 
-NexPhone combines a remotely hosted Android application environment, an intelligent
-orchestration engine and a lightweight client interface.
+NexPhone combines persistent execution environments, an agent that operates them, a UI Engine that
+turns observed application state into contextual interfaces, and a lightweight terminal.
 
 The project prioritizes user autonomy, local execution, modularity, privacy and extensibility.
 
@@ -56,6 +56,9 @@ NexPhone MUST maintain architectural independence between three primary subsyste
 1. Android Runtime.
 2. AI Engine.
 3. Client Application.
+
+These names describe the M0 realization. They map to the Backend, Agent and Terminal roles in
+Reference Architecture Roles; the independence rules apply to both representations.
 
 Each subsystem MUST have clearly defined responsibilities and communication contracts.
 
@@ -123,7 +126,8 @@ The architecture MUST account for applications that restrict automation or inspe
 
 ### Principle 7 — AI-Native Interaction
 
-The AI is the primary interaction layer of NexPhone.
+The AI is the primary interaction layer of NexPhone. Generated contextual interfaces are part of
+this layer; their ordinary rendering does not require model inference.
 
 The platform MUST prioritize intent-driven interaction over traditional application-centric
 navigation.
@@ -280,6 +284,118 @@ The core platform MUST remain functional without optional community extensions o
 The project SHOULD establish compatibility policies, extension lifecycle management, and migration
 guidelines for public interfaces.
 
+### Principle 17 — Terminal Independence
+
+NexPhone MUST treat the terminal as a replaceable access device, not as the host of the computing
+environment.
+
+- The platform MUST be usable from terminals that do not run Android.
+- Terminal capabilities MUST be optional, discoverable and requested explicitly.
+- Terminal-specific code MUST be isolated from backend and agent logic.
+- A terminal MUST NOT receive application data or credentials beyond what the current interface
+  requires.
+- A user SHOULD be able to start a task on one terminal and continue on another without losing
+  backend environment state, subject to an explicit session policy.
+
+### Principle 18 — Execution Environment Independence
+
+Android is the initial execution environment, not a permanent architectural boundary.
+
+- Backend capabilities MUST be expressed against an execution-environment contract.
+- The agent and terminal MUST NOT depend on Android-specific implementation details.
+- Additional execution environments, including Linux and browser environments, SHOULD be
+  supportable without a fundamental redesign.
+- Environment-specific capabilities MUST be discoverable and optional.
+- The project MUST NOT claim portability that has not been validated.
+
+### Principle 19 — Intent-Driven Interfaces
+
+NexPhone MUST prioritize interfaces derived from user intentions and observed application state over
+direct application navigation.
+
+- The UI Engine MUST observe application state, produce a normalized representation, generate
+  contextual interfaces, and map terminal interactions back to the application.
+- Interface generation SHOULD be deterministic for known structures and MUST NOT require an LLM for
+  ordinary rendering.
+- Native application interfaces MUST remain available as a fallback and as an explicit user choice.
+- Generated interfaces MUST be accessible, predictable and attributable to observed state.
+- The system MUST NOT fabricate application state or silently substitute a different action.
+
+### Principle 20 — Deterministic-First Interaction
+
+Deterministic interpretation MUST be attempted before LLM or vision inference.
+
+- Accessibility hierarchies, rules and cached mappings SHOULD resolve straightforward cases
+  without model inference.
+- LLM or vision interpretation MAY be used when deterministic interpretation is insufficient,
+  ambiguous or unavailable.
+- The system MUST record which interpretation level produced an action and its confidence.
+- Interpretation levels MUST compose with an explicit fallback order.
+- A screenshot-to-LLM-to-click loop MUST NOT be the default interaction mechanism.
+- Performance targets MUST be treated as engineering hypotheses and validated by measurement.
+
+### Principle 21 — Adaptive Interaction Modes and Human–Agent Coexistence
+
+NexPhone MUST support conversational, structured-UI and native-UI interaction modes.
+
+- The agent SHOULD select the most appropriate mode for the task.
+- The user MUST be able to request native UI access or switch modes.
+- Mode transitions MUST preserve the execution environment and application state.
+- The system MUST communicate progress, uncertainty and failures.
+- Consequential actions MUST remain under explicit user control.
+
+### Principle 22 — Application Independence and Mechanism Selection
+
+NexPhone MUST NOT depend on application-specific integrations as an architectural requirement.
+
+- Interaction mechanisms MUST be selected by reliability, security and availability, in this order:
+  native APIs or documented integrations, MCP interfaces, accessibility-based interaction, and
+  visual automation.
+- MCP is an optional interoperability interface, not the foundation of the platform.
+- The selected mechanism MUST be observable and documented for each operation.
+- Application security boundaries, platform rules and integrity checks MUST be respected; the
+  project MUST NOT bypass them.
+
+### Principle 23 — Graduated Authorization
+
+NexPhone MUST distinguish three authorization levels:
+
+1. **Read**: inspect application information and retrieve data.
+2. **Act**: navigate, fill forms, send messages and modify application state.
+3. **Commit**: perform consequential or irreversible operations.
+
+- Commit operations MUST require explicit, informed user authorization and MUST default to deny.
+- Authorization policies MUST be enforced outside the LLM.
+- Credentials, verification codes and private application data MUST NOT be exposed to LLM providers
+  unnecessarily.
+- Significant automated operations SHOULD be auditable.
+- Users MUST be able to inspect and revoke granted permissions.
+
+## Reference Architecture Roles
+
+NexPhone defines three fundamental roles. They are logical responsibilities, not necessarily three
+separate processes or repositories.
+
+- **Backend**: the persistent computing environment. It hosts execution environments, the runtime
+  abstraction, the agent runtime, the UI Engine, policy enforcement and persistent storage.
+- **Terminal**: the user's access device. It displays generated interfaces, captures input, provides
+  connectivity and MAY expose physical capabilities through the Device Bridge. It MUST NOT be
+  coupled to Android as its execution environment.
+- **Agent**: the intelligent operator. It interprets intentions, plans, selects interaction
+  mechanisms, requests authorization and reports outcomes. It MUST remain independent of the
+  execution environment and of specific model providers.
+
+The **UI Engine** is a backend component with four responsibilities: observing application state,
+interpreting it into a normalized representation, generating contextual interfaces, and mapping
+terminal actions back to the application.
+
+The **Device Bridge** is an optional terminal capability broker. It exposes sensors and hardware to
+the backend only through explicit, revocable user consent.
+
+The M0 implementation realizes the Backend as the gateway plus the Android runtime adapter, and the
+Terminal as the mobile web client. The Agent, UI Engine and Device Bridge are not yet implemented;
+their absence MUST NOT be represented as completed product capability.
+
 ## Development Constraints
 
 The initial MVP MUST prioritize:
@@ -291,9 +407,14 @@ The initial MVP MUST prioritize:
 5. Remote interaction from a physical Android phone.
 6. Screen streaming and input forwarding.
 
-AI orchestration, general-purpose computer use, dynamic interfaces and persistent proactive
+The Android phone is the initial terminal, not a terminal architecture requirement.
+
+AI orchestration, general-purpose computer use, intent-driven interfaces and persistent proactive
 assistance SHOULD be introduced incrementally after the underlying execution environment is
 functional.
+
+After the execution foundation is functional, the next increment MUST introduce deterministic
+intent-driven interfaces before LLM-dependent interpretation becomes the default path.
 
 The initial MVP MUST NOT require:
 
@@ -304,6 +425,9 @@ The initial MVP MUST NOT require:
 - A custom LLM.
 - Mandatory external APIs.
 - Application-specific integrations for numerous applications.
+- MCP as a prerequisite for core functionality.
+- A specific terminal platform.
+- A specific model provider.
 
 These restrictions apply to initial scope, not necessarily to future capabilities.
 
@@ -373,8 +497,11 @@ NexPhone succeeds when a user can:
 4. Interact with applications remotely.
 5. Delegate application workflows to an AI assistant.
 6. Use natural language as the primary interface.
-7. Retain control over their data and execution environment.
-8. Operate the platform without mandatory external infrastructure.
+7. Interact through generated contextual interfaces as well as native application screens.
+8. Use a terminal that is not tied to Android as its execution environment.
+9. Authorize consequential actions explicitly and revoke permissions at any time.
+10. Retain control over their data and execution environment.
+11. Operate the platform without mandatory external infrastructure.
 
 **Ultimate principle:**
 
@@ -411,6 +538,10 @@ This constitution uses semantic versioning.
 - Compliance verification MUST cover subsystem boundaries (Principle 3), runtime abstraction
   (Principle 4), authorization placement (Principle 9), data persistence guarantees (Principle 11)
   and public interface stability (Principle 16).
+- Compliance verification MUST also cover terminal independence (Principle 17), execution
+  environment independence (Principle 18), intent-driven interface boundaries (Principle 19),
+  deterministic-first behavior (Principle 20), interaction-mode selection (Principle 21),
+  mechanism selection (Principle 22) and authorization levels (Principle 23).
 - Significant architectural decisions MUST be backed by an ADR as defined in Architecture Decision
   Governance.
 - Core and ecosystem contributions MUST be reviewed under the contribution classes defined in
@@ -418,9 +549,10 @@ This constitution uses semantic versioning.
 
 **Change history**
 
-| Version | Date       | Summary                                                      |
-| ------- | ---------- | ------------------------------------------------------------ |
-| 1.0.0   | 2026-11-09 | Initial ratification: 14 principles and baseline governance. |
-| 1.1.0   | 2026-11-09 | Added Principles 15–16 and community governance.             |
+| Version | Date       | Summary                                                                 |
+| ------- | ---------- | ----------------------------------------------------------------------- |
+| 1.0.0   | 2026-11-09 | Initial ratification: 14 principles and baseline governance.            |
+| 1.1.0   | 2026-11-09 | Added Principles 15–16 and community governance.                        |
+| 1.2.0   | 2026-11-09 | Added Principles 17–23, reference architecture roles and authorization. |
 
-**Version**: 1.1.0 | **Ratified**: 2026-11-09 | **Last Amended**: 2026-11-09
+**Version**: 1.2.0 | **Ratified**: 2026-11-09 | **Last Amended**: 2026-11-09

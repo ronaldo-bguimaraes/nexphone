@@ -10,6 +10,10 @@
 Android environment hosted on a Linux computer and accessible remotely from a physical Android phone
 over a local network."
 
+> **Scope note**: This specification covers M0 only. The long-term reference architecture — Agent,
+> UI Engine, Device Bridge, adaptive interaction modes and additional execution environments — is
+> documented in [`docs/architecture.md`](../../docs/architecture.md) and is out of scope here.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Deploy and start the environment (Priority: P1)

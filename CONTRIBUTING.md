@@ -30,6 +30,9 @@ You do not need to understand the whole codebase to contribute to an isolated co
 - For anything larger than a small fix, open an issue or discussion first so we can agree on the
   approach before you invest time.
 - **Do not report security vulnerabilities publicly.** Follow [SECURITY.md](SECURITY.md).
+- Read the [reference architecture](docs/architecture.md), [UI Engine
+  specification](docs/ui-engine.md), [interaction modes](docs/interaction-modes.md) and
+  [authorization model](docs/authorization.md) before changing cross-cutting behavior.
 - Significant architectural changes require an **Architecture Decision Record (ADR)**. See
   [`docs/adr/`](docs/adr/README.md).
 

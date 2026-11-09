@@ -2,6 +2,20 @@
 
 **Status**: Pending measurement on the reference host. No target is asserted before measurement.
 
+The UI Engine adds a second performance profile, specified in
+[`ui-engine.md`](ui-engine.md#9-performance). Its targets are proposed engineering hypotheses, not
+measured guarantees:
+
+| Operation | Proposed target |
+| --- | ---: |
+| Render an existing generated interface | < 100 ms |
+| Local input update | < 50 ms |
+| Deterministic state interpretation | < 300 ms |
+| Semantic interpretation | < 2 s |
+
+Measure observation, interpretation, generation, transport and application stages independently.
+Do not regenerate interfaces when only local input values change.
+
 The specification deliberately avoids invented performance targets. The implementation records:
 
 - Input-to-display latency as observed by the client (estimated until a display-timestamp

@@ -48,3 +48,9 @@ an ADR.
 | [0001](0001-record-architecture-decisions.md)            | Record architecture decisions  | Accepted | 2026-11-09 |
 | [0002](0002-runtime-adapter-contract.md)                 | Runtime adapter contract       | Accepted | 2026-11-09 |
 | [0003](0003-runtime-isolation.md)                        | Runtime isolation              | Proposed | 2026-11-09 |
+| [0004](0004-intent-driven-ui-engine.md)                  | Intent-driven UI Engine        | Accepted | 2026-11-09 |
+| [0005](0005-deterministic-first.md)                      | Deterministic-first hierarchy  | Accepted | 2026-11-09 |
+| [0006](0006-device-bridge.md)                            | Device Bridge broker           | Proposed | 2026-11-09 |
+| [0007](0007-integration-mechanism-priority.md)           | Integration mechanism priority | Accepted | 2026-11-09 |
+| [0008](0008-execution-environment-independence.md)       | Execution environment independence | Accepted | 2026-11-09 |
+| [0009](0009-terminal-independence.md)                    | Terminal independence          | Accepted | 2026-11-09 |
