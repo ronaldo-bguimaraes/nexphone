@@ -1,6 +1,6 @@
 # NexPhone Constitution
 
-**Version:** 1.0.0
+**Version:** 1.1.0
 **Project:** NexPhone
 **Status:** Ratified
 
@@ -240,6 +240,46 @@ NexPhone SHOULD favor established protocols, formats and interfaces.
 
 Custom protocols SHOULD only be introduced when established alternatives are insufficient.
 
+### Principle 15 — Community-Driven Development
+
+NexPhone MUST be developed as an open and collaborative project that enables participation from
+independent developers, organizations, and users.
+
+The project MUST provide clear contribution guidelines, accessible development documentation,
+reproducible development environments, and transparent decision-making processes.
+
+Contributions MUST be evaluated according to technical merit, security, maintainability,
+compatibility, documentation quality, and alignment with the project's constitution.
+
+The project SHOULD encourage contributions across all subsystems, including the Android runtime,
+AI engine, clients, infrastructure, integrations, documentation, and testing.
+
+The project MUST NOT require contributors to understand or modify the entire codebase to contribute
+to an isolated component.
+
+### Principle 16 — Extensibility and Community Ecosystem
+
+NexPhone MUST expose documented, stable, and versioned interfaces that enable independently
+developed components and extensions.
+
+The architecture SHOULD support community-developed:
+
+- Android runtime adapters.
+- AI agents, tools, and capabilities.
+- Model providers and inference backends.
+- Mobile and web clients.
+- External service integrations.
+- Plugins and extensions.
+- Deployment configurations and infrastructure adapters.
+
+Extensions SHOULD be isolated from internal implementation details and SHOULD NOT require
+modifications to unrelated core components.
+
+The core platform MUST remain functional without optional community extensions or external services.
+
+The project SHOULD establish compatibility policies, extension lifecycle management, and migration
+guidelines for public interfaces.
+
 ## Development Constraints
 
 The initial MVP MUST prioritize:
@@ -301,6 +341,28 @@ Specifications MUST NOT silently override constitutional principles.
 
 Constitutional changes require an explicit version update and documentation of the rationale.
 
+## Community and Ecosystem Governance
+
+The project MUST maintain the following repository artifacts:
+
+- `CONTRIBUTING.md`: contribution workflow, development setup, coding standards, testing and pull
+  request expectations.
+- `CODE_OF_CONDUCT.md`: community participation and behavior expectations.
+- `SECURITY.md`: vulnerability reporting and security disclosure procedures.
+- `LICENSE`: explicit open-source licensing.
+- Issue and pull request templates.
+- Architecture Decision Records (ADRs) for significant technical decisions.
+
+**Contribution classes**
+
+1. **Core contributions**: changes to the main NexPhone platform, subject to core maintainer
+   review.
+2. **Ecosystem contributions**: independent extensions, adapters, integrations and tools that can
+   be developed and maintained separately.
+
+Core maintainers MUST retain responsibility for architectural consistency, security, compatibility
+and project direction. Contribution decisions SHOULD be transparent and documented.
+
 ## Definition of Project Success
 
 NexPhone succeeds when a user can:
@@ -347,9 +409,18 @@ This constitution uses semantic versioning.
 - Every pull request, review and specification MUST verify compliance with this constitution.
 - Any deviation MUST be explicitly identified, justified and resolved before merge.
 - Compliance verification MUST cover subsystem boundaries (Principle 3), runtime abstraction
-  (Principle 4), authorization placement (Principle 9) and data persistence guarantees
-  (Principle 11).
+  (Principle 4), authorization placement (Principle 9), data persistence guarantees (Principle 11)
+  and public interface stability (Principle 16).
 - Significant architectural decisions MUST be backed by an ADR as defined in Architecture Decision
   Governance.
+- Core and ecosystem contributions MUST be reviewed under the contribution classes defined in
+  Community and Ecosystem Governance.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-09 | **Last Amended**: 2026-11-09
+**Change history**
+
+| Version | Date       | Summary                                                      |
+| ------- | ---------- | ------------------------------------------------------------ |
+| 1.0.0   | 2026-11-09 | Initial ratification: 14 principles and baseline governance. |
+| 1.1.0   | 2026-11-09 | Added Principles 15–16 and community governance.             |
+
+**Version**: 1.1.0 | **Ratified**: 2026-11-09 | **Last Amended**: 2026-11-09
