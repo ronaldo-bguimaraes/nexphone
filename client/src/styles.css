@@ -1,0 +1,191 @@
+:root {
+  color-scheme: dark;
+  --bg: #0b0f14;
+  --panel: #121820;
+  --text: #e6edf3;
+  --muted: #8b98a5;
+  --accent: #4da3ff;
+  --danger: #ff6b6b;
+  --ok: #3ddc97;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.pairing {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.pairing h1,
+.session h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+.pairing p {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+}
+
+.pairing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: min(20rem, 100%);
+}
+
+.pairing-form label {
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.pairing-form input {
+  padding: 1rem;
+  font-size: 1.75rem;
+  letter-spacing: 0.5rem;
+  text-align: center;
+  border-radius: 0.75rem;
+  border: 1px solid #263140;
+  background: var(--panel);
+  color: var(--text);
+}
+
+.pairing-form button,
+.connection button,
+.signout {
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  border: 0;
+  background: var(--accent);
+  color: #04121f;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pairing-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--danger);
+}
+
+.session {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.session-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--panel);
+  border-bottom: 1px solid #1f2937;
+}
+
+.session-header h1 {
+  font-size: 1.1rem;
+  flex: 1;
+}
+
+.connection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.connection .dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.connection-connected .dot {
+  background: var(--ok);
+}
+
+.connection-reconnecting .dot,
+.connection-connecting .dot {
+  background: #f5c451;
+}
+
+.connection-disconnected .dot {
+  background: var(--danger);
+}
+
+.connection-message {
+  max-width: 40ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signout {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid #263140;
+}
+
+.screen {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 0.5rem;
+}
+
+.screen canvas {
+  max-height: 100%;
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #000;
+  border-radius: 0.5rem;
+  touch-action: none;
+  outline: none;
+}
+
+@media (max-width: 640px) {
+  .session-header {
+    flex-wrap: wrap;
+  }
+
+  .screen {
+    padding: 0;
+  }
+
+  .screen canvas {
+    border-radius: 0;
+    max-height: calc(100dvh - 4.5rem);
+  }
+}

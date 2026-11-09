@@ -71,15 +71,16 @@ Rules:
 {
   "type": "video_config",
   "codec": "h264",
-  "format": "annexb",
+  "format": "h264-annexb",
   "width": 720,
   "height": 1280,
   "fps": 30
 }
 ```
 
-- Every binary WebSocket message contains exactly one Annex B H.264 access unit.
-- The stream starts with a keyframe (IDR) preceded by SPS/PPS.
+- Every binary WebSocket message carries exactly one media packet with a one-byte header:
+  `0x01` for a codec-configuration packet (SPS/PPS) and `0x02` for a data packet.
+- The stream starts with a configuration packet followed by a keyframe (IDR).
 - The client decodes with WebCodecs when available; otherwise it uses the packaged tinyh264
   fallback.
 - The server MAY drop non-keyframe frames under backpressure, keeping the latest frame. It MUST

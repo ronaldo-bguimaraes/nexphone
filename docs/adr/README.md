@@ -46,3 +46,5 @@ an ADR.
 | ADR                                                      | Title                          | Status   | Date       |
 | -------------------------------------------------------- | ------------------------------ | -------- | ---------- |
 | [0001](0001-record-architecture-decisions.md)            | Record architecture decisions  | Accepted | 2026-11-09 |
+| [0002](0002-runtime-adapter-contract.md)                 | Runtime adapter contract       | Accepted | 2026-11-09 |
+| [0003](0003-runtime-isolation.md)                        | Runtime isolation              | Proposed | 2026-11-09 |

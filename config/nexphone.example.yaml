@@ -1,0 +1,29 @@
+host:
+  binding: lan
+  port: 8443
+  tls:
+    mode: caddy-internal
+
+runtime:
+  adapter: redroid
+  image: redroid/redroid@sha256:0000000000000000000000000000000000000000000000000000000000000000
+  display:
+    width: 720
+    height: 1280
+    fps: 30
+  gpuMode: guest
+  memoryLimitMb: 4096
+
+storage:
+  dataPath: /data
+  statePath: /state
+
+auth:
+  pairingTtlSeconds: 300
+  sessionIdleTtlSeconds: 43200
+  sessionAbsoluteTtlSeconds: 86400
+  maxPairingAttemptsPerMinute: 5
+
+logging:
+  level: info
+  retentionDays: 14

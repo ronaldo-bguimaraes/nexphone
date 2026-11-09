@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+data/
+deploy/.env
+deploy/vendor/*.jar
+config/nexphone.yaml
+.DS_Store
+.vscode/
+.idea/

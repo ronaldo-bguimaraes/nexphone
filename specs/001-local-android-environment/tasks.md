@@ -34,15 +34,15 @@ Repository layout from `plan.md`: `backend/src/`, `backend/tests/`, `client/src/
 
 **Purpose**: Initialize the monorepo and toolchain.
 
-- [ ] T001 Create the repository layout and root npm workspace in `package.json`, add `data/` to `.gitignore`, and scaffold `backend/`, `client/`, `deploy/`, `docs/`, and `backend/tests/fixtures/`
-- [ ] T002 Initialize the backend package with TypeScript, Fastify, Zod, Pino, Dockerode, Better-SQLite3, `@yume-chan/adb`, `@yume-chan/scrcpy`, Vitest, ESLint and Prettier in `backend/package.json` and `backend/tsconfig.json`
-- [ ] T003 Initialize the client package with React 18, Vite, TypeScript, Vitest and Playwright in `client/package.json`, `client/tsconfig.json` and `client/vite.config.ts`
-- [ ] T004 [P] Configure shared linting and formatting in `eslint.config.js`, `.prettierrc` and `.editorconfig`
-- [ ] T005 [P] Create `deploy/.env.example` and `config/nexphone.example.yaml` from the configuration contract, including the `runtime.image` pinned-digest requirement
-- [ ] T006 [P] Create the backend container image in `backend/Dockerfile` using a multi-stage Node.js 22 build and a non-root runtime user
-- [ ] T007 [P] Create the client build image in `client/Dockerfile` or configure static build output for the gateway in `client/vite.config.ts`
-- [ ] T008 [P] Add a CI workflow running typecheck, lint and unit/contract tests in `.github/workflows/ci.yml`
-- [ ] T009 [P] Document the integration fixture policy (pinned checksums, licenses) in `backend/tests/fixtures/README.md`
+- [x] T001 Create the repository layout and root npm workspace in `package.json`, add `data/` to `.gitignore`, and scaffold `backend/`, `client/`, `deploy/`, `docs/`, and `backend/tests/fixtures/`
+- [x] T002 Initialize the backend package with TypeScript, Fastify, Zod, Pino, Dockerode, Better-SQLite3, `@yume-chan/adb`, `@yume-chan/scrcpy`, Vitest, ESLint and Prettier in `backend/package.json` and `backend/tsconfig.json`
+- [x] T003 Initialize the client package with React 18, Vite, TypeScript, Vitest and Playwright in `client/package.json`, `client/tsconfig.json` and `client/vite.config.ts`
+- [x] T004 [P] Configure shared linting and formatting in `eslint.config.js`, `.prettierrc` and `.editorconfig`
+- [x] T005 [P] Create `deploy/.env.example` and `config/nexphone.example.yaml` from the configuration contract, including the `runtime.image` pinned-digest requirement
+- [x] T006 [P] Create the backend container image in `backend/Dockerfile` using a multi-stage Node.js 24 build and a non-root runtime user
+- [x] T007 [P] Create the client build image in `client/Dockerfile` or configure static build output for the gateway in `client/vite.config.ts`
+- [x] T008 [P] Add a CI workflow running typecheck, lint and unit/contract tests in `.github/workflows/ci.yml`
+- [x] T009 [P] Document the integration fixture policy (pinned checksums, licenses) in `backend/tests/fixtures/README.md`
 
 **Checkpoint**: Workspace installs, builds, lints and runs an empty test suite.
 
@@ -54,25 +54,25 @@ Repository layout from `plan.md`: `backend/src/`, `backend/tests/`, `client/src/
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T010 Implement the strict Zod configuration schema and loader in `backend/src/config/schema.ts` and `backend/src/config/load.ts`, enforcing the documented ranges and rejecting unknown keys
-- [ ] T011 [P] Implement the normalized error taxonomy in `backend/src/runtime/errors.ts` with the `AdapterErrorCode` values from `contracts/runtime-adapter.md` and remediation text
-- [ ] T012 [P] Implement Pino logging with redaction of tokens, pairing codes and certificate material in `backend/src/observability/logger.ts`
-- [ ] T013 [P] Implement structured operational events in `backend/src/observability/events.ts` with the allow-listed `details` keys from `data-model.md`
-- [ ] T014 [P] Implement the SQLite connection and migrations in `backend/src/storage/db.ts` for pairing credentials and sessions
-- [ ] T015 [P] Define the runtime adapter interface and version constant in `backend/src/runtime/contract.ts` exactly as specified in `contracts/runtime-adapter.md`
-- [ ] T016 [P] Implement adapter selection by configuration in `backend/src/runtime/registry.ts`
-- [ ] T017 [P] Implement the in-memory fake adapter in `backend/src/runtime/fake/adapter.ts` for tests and browser flows
-- [ ] T018 Implement the reusable adapter contract suite in `backend/tests/contract/runtime-adapter.spec.ts` covering all ten conformance items
-- [ ] T019 [P] Implement persistent-store inspection in `backend/src/storage/environment.ts` returning `ok`, `missing`, `read-only`, `unsafe` or `inconsistent`
-- [ ] T020 Implement the Fastify composition and health endpoint in `backend/src/app.ts`, `backend/src/main.ts` and `backend/src/api/health.ts`
-- [ ] T021 [P] Implement pairing credentials in `backend/src/auth/pairing.ts`: 8-digit single-use codes, SHA-256 hash with server pepper, configurable TTL (60–900 s, default 300) and per-source rate limiting
-- [ ] T022 [P] Implement sessions in `backend/src/auth/sessions.ts`: 256-bit token, SHA-256 hash, idle TTL (default 43200 s), absolute TTL (default 86400 s), durable revocation
-- [ ] T023 Implement bearer authentication and the single-active-session rule in `backend/src/api/middleware.ts`
-- [ ] T024 Implement `POST /api/pair`, `DELETE /api/session` and `GET /api/sessions` in `backend/src/api/pairing.ts`
-- [ ] T025 Implement the operator CLI skeleton with `status`, `pair` and `session revoke` in `backend/src/cli.ts`
-- [ ] T026 [P] Add unit tests for config, logging redaction and migrations in `backend/tests/unit/config.spec.ts`, `backend/tests/unit/logger.spec.ts` and `backend/tests/unit/db.spec.ts`
-- [ ] T027 [P] Add unit tests for pairing expiry, single use, rate limiting and session revocation in `backend/tests/unit/auth.spec.ts`
-- [ ] T028 Create the integration harness with Docker Compose teardown, readiness waits and `@integration` tagging in `backend/tests/integration/harness.ts`
+- [x] T010 Implement the strict Zod configuration schema and loader in `backend/src/config/schema.ts` and `backend/src/config/load.ts`, enforcing the documented ranges and rejecting unknown keys
+- [x] T011 [P] Implement the normalized error taxonomy in `backend/src/runtime/errors.ts` with the `AdapterErrorCode` values from `contracts/runtime-adapter.md` and remediation text
+- [x] T012 [P] Implement Pino logging with redaction of tokens, pairing codes and certificate material in `backend/src/observability/logger.ts`
+- [x] T013 [P] Implement structured operational events in `backend/src/observability/events.ts` with the allow-listed `details` keys from `data-model.md`
+- [x] T014 [P] Implement the SQLite connection and migrations in `backend/src/storage/db.ts` for pairing credentials and sessions
+- [x] T015 [P] Define the runtime adapter interface and version constant in `backend/src/runtime/contract.ts` exactly as specified in `contracts/runtime-adapter.md`
+- [x] T016 [P] Implement adapter selection by configuration in `backend/src/runtime/registry.ts`
+- [x] T017 [P] Implement the in-memory fake adapter in `backend/src/runtime/fake/adapter.ts` for tests and browser flows
+- [x] T018 Implement the reusable adapter contract suite in `backend/tests/contract/runtime-adapter.spec.ts` covering all ten conformance items
+- [x] T019 [P] Implement persistent-store inspection in `backend/src/storage/environment.ts` returning `ok`, `missing`, `read-only`, `unsafe` or `inconsistent`
+- [x] T020 Implement the Fastify composition and health endpoint in `backend/src/app.ts`, `backend/src/main.ts` and `backend/src/api/health.ts`
+- [x] T021 [P] Implement pairing credentials in `backend/src/auth/pairing.ts`: 8-digit single-use codes, SHA-256 hash with server pepper, configurable TTL (60–900 s, default 300) and per-source rate limiting
+- [x] T022 [P] Implement sessions in `backend/src/auth/sessions.ts`: 256-bit token, SHA-256 hash, idle TTL (default 43200 s), absolute TTL (default 86400 s), durable revocation
+- [x] T023 Implement bearer authentication and the single-active-session rule in `backend/src/api/middleware.ts`
+- [x] T024 Implement `POST /api/pair`, `DELETE /api/session` and `GET /api/sessions` in `backend/src/api/pairing.ts`
+- [x] T025 Implement the operator CLI skeleton with `status`, `pair` and `session revoke` in `backend/src/cli.ts`
+- [x] T026 [P] Add unit tests for config, logging redaction and migrations in `backend/tests/unit/config.spec.ts`, `backend/tests/unit/logger.spec.ts` and `backend/tests/unit/db.spec.ts`
+- [x] T027 [P] Add unit tests for pairing expiry, single use, rate limiting and session revocation in `backend/tests/unit/auth.spec.ts`
+- [x] T028 Create the integration harness with Docker Compose teardown, readiness waits and `@integration` tagging in `backend/tests/integration/harness.ts`
 
 **Checkpoint**: Configuration, storage, auth and the adapter contract are ready; the fake adapter
 passes the contract suite; `GET /api/health` responds.
@@ -88,25 +88,25 @@ start the stack, and confirm `nexphone status` reports a ready runtime; stop and
 
 ### Tests for User Story 1
 
-- [ ] T029 [P] [US1] Add unit tests for the Redroid container lifecycle with a mocked Dockerode client in `backend/tests/unit/redroid-container.spec.ts`
-- [ ] T030 [P] [US1] Add unit tests for readiness polling, timeout and state transitions in `backend/tests/unit/redroid-readiness.spec.ts`
-- [ ] T031 [P] [US1] Add an `@integration` test that starts the real runtime and waits for `ready` in `backend/tests/integration/runtime-lifecycle.spec.ts`
+- [x] T029 [P] [US1] Add unit tests for the Redroid container lifecycle with a mocked Dockerode client in `backend/tests/unit/redroid-container.spec.ts`
+- [x] T030 [P] [US1] Add unit tests for readiness polling, timeout and state transitions in `backend/tests/unit/redroid-readiness.spec.ts`
+- [x] T031 [P] [US1] Add an `@integration` test that starts the real runtime and waits for `ready` in `backend/tests/integration/runtime-lifecycle.spec.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T032 [P] [US1] Implement the host preflight script checking KVM, binder, ports, disk and memory in `deploy/scripts/preflight.sh`
-- [ ] T033 [P] [US1] Create the Compose stack with `gateway`, `runtime` and `caddy` services, health checks and the `data/redroid` bind mount in `deploy/compose.yaml`
-- [ ] T034 [P] [US1] Configure local TLS with Caddy's internal CA in `deploy/caddy/Caddyfile`
-- [ ] T035 [US1] Implement `validateHost()` and the restricted-capability container specification (no `--privileged`, no Docker socket, no host PID/network namespace) in `backend/src/runtime/redroid/adapter.ts` and `backend/src/runtime/redroid/container.ts`
-- [ ] T036 [US1] Implement start, stop, status and the bounded restart policy in `backend/src/runtime/redroid/container.ts`
-- [ ] T037 [US1] Implement ADB connection and readiness detection using `sys.boot_completed` with a bounded timeout in `backend/src/runtime/redroid/adb.ts`
-- [ ] T038 [US1] Implement capability discovery (Android version, API level, ABI list, display, fps, GPU mode) in `backend/src/runtime/redroid/adapter.ts`
-- [ ] T039 [US1] Wire persistent-store inspection into runtime startup so an unsafe store blocks start without deleting data in `backend/src/runtime/redroid/adapter.ts`
-- [ ] T040 [US1] Implement `GET /api/runtime`, `POST /api/runtime/start`, `POST /api/runtime/stop` and `POST /api/runtime/restart` in `backend/src/api/runtime.ts`
-- [ ] T041 [US1] Implement the `nexphone runtime start|stop|restart` and enhanced `status` commands in `backend/src/cli.ts`
-- [ ] T042 [US1] Add Compose health checks and idempotent start/stop scripts in `deploy/scripts/up.sh` and `deploy/scripts/down.sh`
-- [ ] T043 [P] [US1] Write deployment documentation in `docs/deployment.md` covering hardware, kernel modules, permissions, ports and configuration
-- [ ] T044 [P] [US1] Write operations documentation in `docs/operations.md` covering start, stop, status, restart and logs
+- [x] T032 [P] [US1] Implement the host preflight script checking KVM, binder, ports, disk and memory in `deploy/scripts/preflight.sh`
+- [x] T033 [P] [US1] Create the Compose stack with `gateway`, `runtime` and `caddy` services, health checks and the `data/redroid` bind mount in `deploy/compose.yaml`
+- [x] T034 [P] [US1] Configure local TLS with Caddy's internal CA in `deploy/caddy/Caddyfile`
+- [x] T035 [US1] Implement `validateHost()` and the restricted-capability container specification (no `--privileged`, no Docker socket, no host PID/network namespace) in `backend/src/runtime/redroid/adapter.ts` and `backend/src/runtime/redroid/container.ts`
+- [x] T036 [US1] Implement start, stop, status and the bounded restart policy in `backend/src/runtime/redroid/container.ts`
+- [x] T037 [US1] Implement ADB connection and readiness detection using `sys.boot_completed` with a bounded timeout in `backend/src/runtime/redroid/adb.ts`
+- [x] T038 [US1] Implement capability discovery (Android version, API level, ABI list, display, fps, GPU mode) in `backend/src/runtime/redroid/adapter.ts`
+- [x] T039 [US1] Wire persistent-store inspection into runtime startup so an unsafe store blocks start without deleting data in `backend/src/runtime/redroid/adapter.ts`
+- [x] T040 [US1] Implement `GET /api/runtime`, `POST /api/runtime/start`, `POST /api/runtime/stop` and `POST /api/runtime/restart` in `backend/src/api/runtime.ts`
+- [x] T041 [US1] Implement the `nexphone runtime start|stop|restart` and enhanced `status` commands in `backend/src/cli.ts`
+- [x] T042 [US1] Add Compose health checks and idempotent start/stop scripts in `deploy/scripts/up.sh` and `deploy/scripts/down.sh`
+- [x] T043 [P] [US1] Write deployment documentation in `docs/deployment.md` covering hardware, kernel modules, permissions, ports and configuration
+- [x] T044 [P] [US1] Write operations documentation in `docs/operations.md` covering start, stop, status, restart and logs
 - [ ] T045 [US1] Verify the deployment is idempotent by re-running `deploy/scripts/up.sh` without data reset, and record the check in `docs/validation/m0-results.md`
 
 **Checkpoint**: The runtime starts, reports ready, stops cleanly, and survives a second deploy.
@@ -122,20 +122,20 @@ observe it foregrounded, stop it, and confirm the runtime stays healthy.
 
 ### Tests for User Story 2
 
-- [ ] T046 [P] [US2] Add unit tests for ADB output parsing and app error mapping in `backend/tests/unit/redroid-apps.spec.ts`
-- [ ] T047 [P] [US2] Add contract tests for install, list, launch and stop against the fake adapter in `backend/tests/contract/app-management.spec.ts`
-- [ ] T048 [P] [US2] Add an `@integration` install/launch/stop test in `backend/tests/integration/app-lifecycle.spec.ts`
+- [x] T046 [P] [US2] Add unit tests for ADB output parsing and app error mapping in `backend/tests/unit/redroid-apps.spec.ts`
+- [x] T047 [P] [US2] Add contract tests for install, list, launch and stop against the fake adapter in `backend/tests/contract/app-management.spec.ts`
+- [x] T048 [P] [US2] Add an `@integration` install/launch/stop test in `backend/tests/integration/app-lifecycle.spec.ts`
 
 ### Implementation for User Story 2
 
 - [ ] T049 [P] [US2] Add a pinned, permissively licensed sample APK and its checksum to `backend/tests/fixtures/sample.apk` and `backend/tests/fixtures/checksums.txt`
-- [ ] T050 [US2] Implement ADB application operations (install, `pm list packages`, launch intent resolution, `am force-stop`) in `backend/src/runtime/redroid/apps.ts`
-- [ ] T051 [US2] Map install and launch failures to cause categories `incompatible`, `corrupt`, `not_installed`, `already_running`, `unsupported_capability`, `runtime_unavailable` and `unknown` in `backend/src/runtime/redroid/apps.ts`
-- [ ] T052 [US2] Implement application state tracking and `lastError` reporting in `backend/src/runtime/redroid/apps.ts`
-- [ ] T053 [US2] Implement `GET /api/apps`, `POST /api/apps` (multipart, 512 MiB limit), `POST /api/apps/{packageId}/launch` and `POST /api/apps/{packageId}/stop` in `backend/src/api/apps.ts`
-- [ ] T054 [US2] Implement the `nexphone apps install|list|launch|stop` commands in `backend/src/cli.ts`
+- [x] T050 [US2] Implement ADB application operations (install, `pm list packages`, launch intent resolution, `am force-stop`) in `backend/src/runtime/redroid/apps.ts`
+- [x] T051 [US2] Map install and launch failures to cause categories `incompatible`, `corrupt`, `not_installed`, `already_running`, `unsupported_capability`, `runtime_unavailable` and `unknown` in `backend/src/runtime/redroid/apps.ts`
+- [x] T052 [US2] Implement application state tracking and `lastError` reporting in `backend/src/runtime/redroid/apps.ts`
+- [x] T053 [US2] Implement `GET /api/apps`, `POST /api/apps` (multipart, 512 MiB limit), `POST /api/apps/{packageId}/launch` and `POST /api/apps/{packageId}/stop` in `backend/src/api/apps.ts`
+- [x] T054 [US2] Implement the `nexphone apps install|list|launch|stop` commands in `backend/src/cli.ts`
 - [ ] T055 [US2] Verify launch without a launcher by resolving and starting the launcher intent directly, and record evidence in `docs/validation/m0-results.md`
-- [ ] T056 [P] [US2] Write application compatibility and limitation documentation in `docs/compatibility.md` covering Google services, ABIs, integrity checks and hardware features
+- [x] T056 [P] [US2] Write application compatibility and limitation documentation in `docs/compatibility.md` covering Google services, ABIs, integrity checks and hardware features
 
 **Checkpoint**: An application can be installed, launched without a launcher, listed and stopped.
 
@@ -151,29 +151,29 @@ restore Wi-Fi and confirm reconnection.
 
 ### Tests for User Story 3
 
-- [ ] T057 [P] [US3] Add unit tests for WebSocket message validation, auth handshake and close codes in `backend/tests/unit/ws-protocol.spec.ts`
-- [ ] T058 [P] [US3] Add unit tests for input coordinate bounds and text length limits in `backend/tests/unit/input.spec.ts`
-- [ ] T059 [P] [US3] Add Playwright end-to-end tests for pairing, screen rendering and input against the fake adapter in `client/tests/e2e/session.spec.ts`
-- [ ] T060 [P] [US3] Add an `@integration` streaming test that measures p50/p95 input-to-display latency in `backend/tests/integration/streaming.spec.ts`
+- [x] T057 [P] [US3] Add unit tests for WebSocket message validation, auth handshake and close codes in `backend/tests/unit/ws-protocol.spec.ts`
+- [x] T058 [P] [US3] Add unit tests for input coordinate bounds and text length limits in `backend/tests/unit/input.spec.ts`
+- [x] T059 [P] [US3] Add Playwright end-to-end tests for pairing, screen rendering and input against the fake adapter in `client/tests/e2e/session.spec.ts`
+- [x] T060 [P] [US3] Add an `@integration` streaming test that measures p50/p95 input-to-display latency in `backend/tests/integration/streaming.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T061 [US3] Implement the scrcpy server lifecycle and video/control channel bridge in `backend/src/runtime/redroid/streaming.ts`
-- [ ] T062 [US3] Implement Annex B H.264 packet production with keyframe metadata in `backend/src/remote/video.ts`
-- [ ] T063 [US3] Implement input translation for tap, swipe, scroll, key and text, rejecting out-of-bounds coordinates in `backend/src/remote/input.ts`
-- [ ] T064 [US3] Implement the WebSocket route with first-message auth, 5-second authentication timeout, single-session enforcement and close codes 4401/4408/4409/4410/4429 in `backend/src/api/stream.ts`
-- [ ] T065 [US3] Implement video forwarding with latest-frame-wins backpressure, keyframe recovery and `video_config` emission in `backend/src/api/stream.ts`
-- [ ] T066 [US3] Implement input rate limiting and validation in `backend/src/api/stream.ts`
-- [ ] T067 [US3] Implement per-session latency instrumentation in `backend/src/remote/protocol.ts` and expose it in status
-- [ ] T068 [US3] Implement `DELETE /api/session` revocation propagation to active WebSockets in `backend/src/auth/sessions.ts` and `backend/src/api/stream.ts`
-- [ ] T069 [US3] Scaffold the client shell, routing and typed API client in `client/src/App.tsx` and `client/src/api/client.ts`
-- [ ] T070 [US3] Implement the pairing screen and token handling in `client/src/session/pairing.tsx`
-- [ ] T071 [US3] Implement connection state, bounded exponential backoff and reconnect in `client/src/session/reconnect.ts`
-- [ ] T072 [US3] Implement H.264 decoding with WebCodecs and the tinyh264 fallback in `client/src/stream/decoder.ts`
-- [ ] T073 [US3] Implement pointer, gesture and keyboard capture with correct scaling after rotation or resize in `client/src/input/capture.ts`
-- [ ] T074 [US3] Implement client error and reconnection UI in `client/src/ui/ConnectionStatus.tsx`
-- [ ] T075 [US3] Document certificate trust and phone pairing in `docs/operations.md`
-- [ ] T076 [US3] Ensure the gateway serves the built client over TLS in `backend/src/app.ts` and `deploy/caddy/Caddyfile`
+- [x] T061 [US3] Implement the scrcpy server lifecycle and video/control channel bridge in `backend/src/runtime/redroid/streaming.ts`
+- [x] T062 [US3] Implement Annex B H.264 packet production with keyframe metadata in `backend/src/remote/video.ts`
+- [x] T063 [US3] Implement input translation for tap, swipe, scroll, key and text, rejecting out-of-bounds coordinates in `backend/src/remote/input.ts`
+- [x] T064 [US3] Implement the WebSocket route with first-message auth, 5-second authentication timeout, single-session enforcement and close codes 4401/4408/4409/4410/4429 in `backend/src/api/stream.ts`
+- [x] T065 [US3] Implement video forwarding with latest-frame-wins backpressure, keyframe recovery and `video_config` emission in `backend/src/api/stream.ts`
+- [x] T066 [US3] Implement input rate limiting and validation in `backend/src/api/stream.ts`
+- [x] T067 [US3] Implement per-session latency instrumentation in `backend/src/remote/protocol.ts` and expose it in status
+- [x] T068 [US3] Implement `DELETE /api/session` revocation propagation to active WebSockets in `backend/src/auth/sessions.ts` and `backend/src/api/stream.ts`
+- [x] T069 [US3] Scaffold the client shell, routing and typed API client in `client/src/App.tsx` and `client/src/api/client.ts`
+- [x] T070 [US3] Implement the pairing screen and token handling in `client/src/session/pairing.tsx`
+- [x] T071 [US3] Implement connection state, bounded exponential backoff and reconnect in `client/src/session/reconnect.ts`
+- [x] T072 [US3] Implement H.264 decoding with WebCodecs and the tinyh264 fallback in `client/src/stream/decoder.ts`
+- [x] T073 [US3] Implement pointer, gesture and keyboard capture with correct scaling after rotation or resize in `client/src/input/capture.ts`
+- [x] T074 [US3] Implement client error and reconnection UI in `client/src/ui/ConnectionStatus.tsx`
+- [x] T075 [US3] Document certificate trust and phone pairing in `docs/operations.md`
+- [x] T076 [US3] Ensure the gateway serves the built client over TLS in `backend/src/app.ts` and `deploy/caddy/Caddyfile`
 
 **Checkpoint**: A phone pairs, sees the live screen, controls the app, reconnects, and is revoked
 immediately.
@@ -190,17 +190,17 @@ data; repeat after a host reboot.
 
 ### Tests for User Story 4
 
-- [ ] T077 [P] [US4] Add unit tests for storage states `missing`, `read-only`, `unsafe` and `inconsistent` in `backend/tests/unit/storage.spec.ts`
-- [ ] T078 [P] [US4] Add an `@integration` persistence test across runtime restart in `backend/tests/integration/persistence.spec.ts`
-- [ ] T079 [P] [US4] Add a scripted host-reboot persistence check in `backend/tests/integration/reboot-persistence.sh`
+- [x] T077 [P] [US4] Add unit tests for storage states `missing`, `read-only`, `unsafe` and `inconsistent` in `backend/tests/unit/storage.spec.ts`
+- [x] T078 [P] [US4] Add an `@integration` persistence test across runtime restart in `backend/tests/integration/persistence.spec.ts`
+- [x] T079 [P] [US4] Add a scripted host-reboot persistence check in `backend/tests/integration/reboot-persistence.sh`
 
 ### Implementation for User Story 4
 
-- [ ] T080 [US4] Implement the startup storage guard that refuses to start on a missing, read-only or unsafe store and never deletes or reinitializes a non-empty store in `backend/src/storage/environment.ts`
-- [ ] T081 [US4] Surface storage state and last check time in `GET /api/status` in `backend/src/api/status.ts`
-- [ ] T082 [US4] Detect an unclean shutdown from `lastSafeStopAt` and enter read-only diagnostic mode when an inconsistent store is suspected in `backend/src/storage/environment.ts`
-- [ ] T083 [US4] Add a persistence verification fixture (create a note, restart, read it back) in `backend/tests/fixtures/persistence-check.md`
-- [ ] T084 [US4] Document backup, restore and data ownership expectations in `docs/operations.md`
+- [x] T080 [US4] Implement the startup storage guard that refuses to start on a missing, read-only or unsafe store and never deletes or reinitializes a non-empty store in `backend/src/storage/environment.ts`
+- [x] T081 [US4] Surface storage state and last check time in `GET /api/status` in `backend/src/api/status.ts`
+- [x] T082 [US4] Detect an unclean shutdown from `lastSafeStopAt` and enter read-only diagnostic mode when an inconsistent store is suspected in `backend/src/storage/environment.ts`
+- [x] T083 [US4] Add a persistence verification fixture (create a note, restart, read it back) in `backend/tests/fixtures/persistence-check.md`
+- [x] T084 [US4] Document backup, restore and data ownership expectations in `docs/operations.md`
 
 **Checkpoint**: Data survives runtime restart and host reboot; unsafe storage fails safely.
 
@@ -216,19 +216,19 @@ verify distinct messages and log entries for each.
 
 ### Tests for User Story 5
 
-- [ ] T085 [P] [US5] Add failure-injection integration tests for runtime crash, invalid pairing and storage denial in `backend/tests/integration/failures.spec.ts`
-- [ ] T086 [P] [US5] Add unit tests asserting tokens, pairing codes and screen content never appear in logs in `backend/tests/unit/redaction.spec.ts`
-- [ ] T087 [P] [US5] Add unit tests for remediation mapping and correlation IDs in `backend/tests/unit/errors.spec.ts`
+- [x] T085 [P] [US5] Add failure-injection integration tests for runtime crash, invalid pairing and storage denial in `backend/tests/integration/failures.spec.ts`
+- [x] T086 [P] [US5] Add unit tests asserting tokens, pairing codes and screen content never appear in logs in `backend/tests/unit/redaction.spec.ts`
+- [x] T087 [P] [US5] Add unit tests for remediation mapping and correlation IDs in `backend/tests/unit/errors.spec.ts`
 
 ### Implementation for User Story 5
 
-- [ ] T088 [US5] Complete the operational event taxonomy for deployment, lifecycle, app, auth, connection and session events in `backend/src/observability/events.ts`
-- [ ] T089 [US5] Implement crash detection, bounded restart and `lastError` propagation to status and WebSocket clients in `backend/src/runtime/redroid/container.ts` and `backend/src/api/stream.ts`
-- [ ] T090 [US5] Implement the error-to-remediation mapping used by the API and CLI in `backend/src/runtime/errors.ts`
-- [ ] T091 [US5] Add correlation IDs to requests and sessions in `backend/src/api/middleware.ts` and `backend/src/observability/logger.ts`
-- [ ] T092 [US5] Implement configurable log retention and rotation in `backend/src/observability/logger.ts`
-- [ ] T093 [US5] Implement distinct CLI and client failure displays for runtime, auth and storage errors in `client/src/ui/ConnectionStatus.tsx` and `backend/src/cli.ts`
-- [ ] T094 [P] [US5] Write troubleshooting guidance in `docs/troubleshooting.md` mapping failure symptoms to remediation
+- [x] T088 [US5] Complete the operational event taxonomy for deployment, lifecycle, app, auth, connection and session events in `backend/src/observability/events.ts`
+- [x] T089 [US5] Implement crash detection, bounded restart and `lastError` propagation to status and WebSocket clients in `backend/src/runtime/redroid/container.ts` and `backend/src/api/stream.ts`
+- [x] T090 [US5] Implement the error-to-remediation mapping used by the API and CLI in `backend/src/runtime/errors.ts`
+- [x] T091 [US5] Add correlation IDs to requests and sessions in `backend/src/api/middleware.ts` and `backend/src/observability/logger.ts`
+- [x] T092 [US5] Implement configurable log retention and rotation in `backend/src/observability/logger.ts`
+- [x] T093 [US5] Implement distinct CLI and client failure displays for runtime, auth and storage errors in `client/src/ui/ConnectionStatus.tsx` and `backend/src/cli.ts`
+- [x] T094 [P] [US5] Write troubleshooting guidance in `docs/troubleshooting.md` mapping failure symptoms to remediation
 
 **Checkpoint**: Every injected failure is legible in status, logs and the client without source
 access.
@@ -245,18 +245,18 @@ confirm the contract suite passes and the client works.
 
 ### Tests for User Story 6
 
-- [ ] T095 [P] [US6] Add a static boundary test that fails if runtime-specific strings appear outside `backend/src/runtime/redroid/` in `backend/tests/unit/boundary.spec.ts`
-- [ ] T096 [P] [US6] Add an isolation test asserting `Privileged=false`, no Docker socket and no host PID/network namespace in `backend/tests/integration/isolation.spec.ts`
-- [ ] T097 [P] [US6] Add a contract-version compatibility test accepting `^1.0.0` and rejecting incompatible adapters in `backend/tests/unit/adapter-version.spec.ts`
+- [x] T095 [P] [US6] Add a static boundary test that fails if runtime-specific strings appear outside `backend/src/runtime/redroid/` in `backend/tests/unit/boundary.spec.ts`
+- [x] T096 [P] [US6] Add an isolation test asserting `Privileged=false`, no Docker socket and no host PID/network namespace in `backend/tests/integration/isolation.spec.ts`
+- [x] T097 [P] [US6] Add a contract-version compatibility test accepting `^1.0.0` and rejecting incompatible adapters in `backend/tests/unit/adapter-version.spec.ts`
 
 ### Implementation for User Story 6
 
-- [ ] T098 [US6] Implement a second adapter (in-memory mock) in `backend/src/runtime/mock/adapter.ts` that passes the full contract suite
-- [ ] T099 [US6] Add a Compose/profile or configuration switch that runs the platform with the alternative adapter in `deploy/compose.mock.yaml`
-- [ ] T100 [US6] Add the isolation verification script used by the deployment check in `deploy/scripts/check-isolation.sh`
-- [ ] T101 [US6] Write the ADR for the runtime adapter contract and versioning in `docs/adr/0002-runtime-adapter-contract.md`
-- [ ] T102 [US6] Write the ADR recording the isolation decision and minimal capability set from the Phase 0 spike in `docs/adr/0003-runtime-isolation.md`
-- [ ] T103 [P] [US6] Write an adapter authoring guide in `docs/adapter-guide.md`
+- [x] T098 [US6] Implement a second adapter (in-memory mock) in `backend/src/runtime/mock/adapter.ts` that passes the full contract suite
+- [x] T099 [US6] Add a Compose/profile or configuration switch that runs the platform with the alternative adapter in `deploy/compose.mock.yaml`
+- [x] T100 [US6] Add the isolation verification script used by the deployment check in `deploy/scripts/check-isolation.sh`
+- [x] T101 [US6] Write the ADR for the runtime adapter contract and versioning in `docs/adr/0002-runtime-adapter-contract.md`
+- [x] T102 [US6] Write the ADR recording the isolation decision and minimal capability set from the Phase 0 spike in `docs/adr/0003-runtime-isolation.md`
+- [x] T103 [P] [US6] Write an adapter authoring guide in `docs/adapter-guide.md`
 
 **Checkpoint**: The platform runs against two adapters, the boundary test passes, and isolation is
 verified empirically.
@@ -267,13 +267,13 @@ verified empirically.
 
 **Purpose**: Hardening, measurement and final validation across stories.
 
-- [ ] T104 [P] Perform a security review of TLS, headers, auth rate limits, container capabilities and file permissions in `docs/security-review.md`
-- [ ] T105 [P] Audit dependencies and licenses, pin runtime image digests, and record results in `docs/dependencies.md`
+- [x] T104 [P] Perform a security review of TLS, headers, auth rate limits, container capabilities and file permissions in `docs/security-review.md`
+- [x] T105 [P] Audit dependencies and licenses, pin runtime image digests, and record results in `docs/dependencies.md`
 - [ ] T106 [P] Record the measured latency baseline, frame rate, resource use and reference hardware in `docs/performance.md`
-- [ ] T107 [P] Improve client usability and accessibility (focus states, labels, touch target sizes) in `client/src/ui/`
+- [x] T107 [P] Improve client usability and accessibility (focus states, labels, touch target sizes) in `client/src/ui/`
 - [ ] T108 Run the complete `quickstart.md` validation on the reference host and record results in `docs/validation/m0-results.md`
-- [ ] T109 Update `README.md` and `CONTRIBUTING.md` with M0 run instructions and known limitations
-- [ ] T110 Remove dead code, resolve TODO markers, and run typecheck, lint and all non-integration tests across `backend/` and `client/`
+- [x] T109 Update `README.md` and `CONTRIBUTING.md` with M0 run instructions and known limitations
+- [x] T110 Remove dead code, resolve TODO markers, and run typecheck, lint and all non-integration tests across `backend/` and `client/`
 - [ ] T111 Run the full integration suite including real runtime, persistence, streaming and isolation, and record the outcome in `docs/validation/m0-results.md`
 
 ---

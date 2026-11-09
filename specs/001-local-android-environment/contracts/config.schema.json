@@ -55,8 +55,8 @@
       "properties": {
         "adapter": {
           "type": "string",
-          "enum": ["redroid"],
-          "default": "redroid"
+          "minLength": 1,
+          "description": "Identifier of a runtime adapter registered by the gateway."
         },
         "image": {
           "type": "string",

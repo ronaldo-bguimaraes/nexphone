@@ -1,0 +1,3 @@
+# Checksums for local integration fixtures.
+# Add one line per fixture, for example:
+# <sha256>  backend/tests/fixtures/sample.apk

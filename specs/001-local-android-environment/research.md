@@ -245,7 +245,8 @@ recovery after `docker compose down` without data loss.
 
 ## R12 — Control-plane stack
 
-**Decision**: Node.js 22 LTS with TypeScript, Fastify 5, Zod, Pino, Dockerode and Better-SQLite3.
+**Decision**: Node.js 24 LTS with TypeScript, Fastify 5, Zod, Pino, Dockerode and Node's built-in
+`node:sqlite` (the Better-SQLite3 native module did not build on the reference Node.js version).
 The web client uses React 18 with Vite and TypeScript.
 
 **Rationale**: The hardest part of M0 is bridging ADB, scrcpy video/control and WebSocket to a

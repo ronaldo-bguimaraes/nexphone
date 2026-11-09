@@ -732,3 +732,70 @@ Preserve the independence between the Android runtime, AI Engine and client appl
 The ultimate objective is not to build another Android emulator, chatbot or remote desktop.
 
 **The objective is to build an open-source, self-hosted personal computing environment where AI is the primary interface to applications and digital services.**
+
+---
+
+## Repository status
+
+This repository currently implements the **M0 foundation**: a local Android runtime, a gateway, a
+web client, and the contracts that keep them replaceable. The AI Engine, voice interaction and
+autonomous workflows are deliberately not implemented yet.
+
+| Area | Location |
+| --- | --- |
+| Constitution | `.specify/memory/constitution.md` |
+| M0 specification | `specs/001-local-android-environment/spec.md` |
+| Plan and research | `specs/001-local-android-environment/plan.md`, `research.md` |
+| Contracts | `specs/001-local-android-environment/contracts/` |
+| Tasks | `specs/001-local-android-environment/tasks.md` |
+| Backend gateway | `backend/src/` |
+| Web client | `client/src/` |
+| Deployment | `deploy/` and `docs/deployment.md` |
+| Operations | `docs/operations.md` |
+| Architecture decisions | `docs/adr/` |
+
+### Run it locally
+
+Prerequisites: Ubuntu 24.04 LTS, Docker Engine with Compose v2, KVM, Android binder, and a phone on
+the same LAN.
+
+```bash
+cp deploy/.env.example deploy/.env
+cp config/nexphone.example.yaml config/nexphone.yaml
+./deploy/scripts/pin-image.sh redroid/redroid:14.0.0_64only-latest
+./deploy/scripts/preflight.sh
+./deploy/scripts/up.sh
+```
+
+Then start and pair:
+
+```bash
+export NEXPHONE_URL=https://localhost:8443
+export NEXPHONE_OPERATOR_TOKEN=$(
+  docker compose --env-file deploy/.env -f deploy/compose.yaml \
+    exec -T gateway cat /state/operator-token | tr -d '\r\n'
+)
+npm run cli -w backend -- runtime start
+npm run cli -w backend -- pair
+```
+
+See `docs/deployment.md` for the full procedure and `docs/validation/m0-results.md` for the current
+verification status.
+
+### Develop
+
+```bash
+npm install
+npm run typecheck
+npm run test:unit
+npm run lint
+```
+
+Integration tests require a KVM + binder host and a pinned runtime image:
+
+```bash
+NEXPHONE_INTEGRATION=1 npm run test:integration -w backend
+```
+
+See `CONTRIBUTING.md` for the contribution workflow and `docs/adapter-guide.md` for implementing an
+alternative Android runtime.

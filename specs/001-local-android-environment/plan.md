@@ -19,11 +19,11 @@ outside any model. The runtime adapter is the only place where Redroid-specific 
 
 ## Technical Context
 
-**Language/Version**: TypeScript 5.6 on Node.js 22 LTS; React 18.3 for the web client; Bash for
+**Language/Version**: TypeScript 5.6 on Node.js 24 LTS; React 18.3 for the web client; Bash for
 deployment preflight.
 
 **Primary Dependencies**: Fastify 5, `@fastify/websocket`, `@fastify/static`, Zod, Pino, Dockerode,
-Better-SQLite3, `@yume-chan/adb`, `@yume-chan/scrcpy`,
+Node.js built-in `node:sqlite`, `@yume-chan/adb`, `@yume-chan/scrcpy`,
 `@yume-chan/scrcpy-decoder-webcodecs`, `@yume-chan/scrcpy-decoder-tinyh264`, React, Vite, Vitest,
 Playwright, Caddy 2, scrcpy-server (Apache-2.0), Android platform-tools, Redroid (provisional).
 
@@ -192,7 +192,7 @@ See [research.md](./research.md). Key decisions:
   the isolation and kernel-module gates.
 - Streaming: scrcpy server H.264 Annex B bridged to the browser; WebCodecs decode with tinyh264
   fallback; input over the scrcpy control protocol.
-- Control plane: Node.js 22 + TypeScript + Fastify; SQLite for pairing/session state.
+- Control plane: Node.js 24 + TypeScript + Fastify; SQLite for pairing/session state.
 - Deployment: Docker Compose with pinned image digests; Caddy for local TLS.
 - Isolation: restricted capability set instead of `--privileged`; if impossible, reject Redroid and
   evaluate a VM-isolated Android runtime before implementation.
