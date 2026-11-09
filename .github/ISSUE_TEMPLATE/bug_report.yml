@@ -1,0 +1,119 @@
+name: Bug report
+description: Report a reproducible defect in NexPhone
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem.
+
+        - **Security issues must not be reported here.** Use the private reporting link instead.
+        - Search existing issues before filing a new one.
+        - Provide the smallest reproduction you can.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight checklist
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: This is not a security vulnerability (those go through private reporting).
+          required: true
+        - label: I agree to follow the project Code of Conduct.
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the defect.
+      placeholder: When I ... NexPhone ... but I expected ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Ordered steps that reliably trigger the problem.
+      placeholder: |
+        1. Start ...
+        2. Open ...
+        3. Run ...
+        4. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead? Include error messages or stack traces.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: subsystem
+    attributes:
+      label: Affected subsystem
+      multiple: true
+      options:
+        - Android runtime
+        - AI engine
+        - Client (mobile)
+        - Client (web)
+        - Infrastructure / deployment
+        - Documentation
+        - Tooling / developer experience
+        - Unknown
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      description: Release version, tag or commit SHA.
+      placeholder: main @ 0000000
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Host OS and version, container runtime, hardware virtualization, client device and OS.
+      placeholder: |
+        Host: Ubuntu 24.04, kernel 6.x, Docker 27
+        Virtualization: KVM enabled, /dev/kvm accessible
+        Client: Pixel 7, Android 15
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste logs or tracebacks. Remove credentials, tokens, personal data and IP addresses.
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, configuration, workarounds tried, or anything else that helps.
+    validations:
+      required: false

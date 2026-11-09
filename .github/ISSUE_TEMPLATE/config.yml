@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/ronaldo-bguimaraes/nexphone/security/advisories/new
+    about: Report vulnerabilities privately. Do not open a public issue for security problems.
+  - name: Questions and ideas
+    url: https://github.com/ronaldo-bguimaraes/nexphone/discussions
+    about: Ask questions, share setups and discuss ideas before opening a feature request.
+  - name: Contributing guide
+    url: https://github.com/ronaldo-bguimaraes/nexphone/blob/main/CONTRIBUTING.md
+    about: Read the contribution workflow, coding standards and testing expectations first.

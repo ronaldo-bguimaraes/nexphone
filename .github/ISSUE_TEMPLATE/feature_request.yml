@@ -1,0 +1,107 @@
+name: Feature request
+description: Propose a capability, improvement or extension interface
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping shape NexPhone.
+
+        Before proposing implementation details, describe the problem and the observable behavior
+        you want. For large or architectural changes, expect a request for a specification
+        (via Spec Kit) and possibly an ADR.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight checklist
+      options:
+        - label: I searched existing issues and discussions and this is not a duplicate.
+          required: true
+        - label: I have read the project constitution and this proposal is consistent with it.
+          required: true
+        - label: I agree to follow the project Code of Conduct.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user or developer problem does this solve? Describe the need, not the implementation.
+      placeholder: As a user I cannot ... which means ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior you would like to see and how you would verify it works.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches, workarounds or existing standards you considered.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: subsystem
+    attributes:
+      label: Affected subsystem
+      multiple: true
+      options:
+        - Android runtime
+        - AI engine
+        - Client (mobile)
+        - Client (web)
+        - Infrastructure / deployment
+        - Documentation
+        - Tooling / developer experience
+        - Cross-cutting / multiple subsystems
+    validations:
+      required: true
+
+  - type: dropdown
+    id: contribution_class
+    attributes:
+      label: Contribution class
+      description: See Community and Ecosystem Governance in the constitution.
+      options:
+        - Core contribution (changes the main platform)
+        - Ecosystem contribution (extension or integration against public interfaces)
+        - Not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: willing_to_implement
+    attributes:
+      label: Are you willing to implement this?
+      options:
+        - "Yes"
+        - "Yes, with guidance"
+        - "No"
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Security, privacy and compatibility considerations
+      description: How could this affect user data, authorization, isolation, offline operation or existing clients?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Mockups, references, related specifications or ADRs.
+    validations:
+      required: false
